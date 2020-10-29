@@ -1,0 +1,74 @@
+	batch	id	group
+GSM1981670	2	GSM1981670	Chronic lymphoblastic leukemia cells
+GSM1981671	2	GSM1981671	Chronic lymphoblastic leukemia cells
+GSM1981672	2	GSM1981672	Chronic lymphoblastic leukemia cells
+GSM1981673	2	GSM1981673	Multiple myeloma cells
+GSM1981674	2	GSM1981674	Small intestine epithelial cells
+GSM1981675	2	GSM1981675	Colon epithelial cells
+GSM1981676	2	GSM1981676	Small intestine epithelial cells
+GSM1981677	2	GSM1981677	Hepatocytes
+GSM1981678	2	GSM1981678	Hepatocytes
+GSM1981679	2	GSM1981679	Chronic lymphoblastic leukemia cells
+GSM1981680	2	GSM1981680	Chronic lymphoblastic leukemia cells
+GSM1981681	2	GSM1981681	Multiple myeloma cells
+GSM1981682	2	GSM1981682	Colon epithelial cells
+GSM1981683	2	GSM1981683	Small intestine epithelial cells
+GSM1981684	2	GSM1981684	Colon epithelial cells
+GSM1981685	2	GSM1981685	Small intestine epithelial cells
+GSM1981686	2	GSM1981686	Small intestine epithelial cells
+GSM1981687	2	GSM1981687	Hepatocytes
+GSM1981688	2	GSM1981688	Acute myeloid leukemia cells
+GSM1981689	2	GSM1981689	Multiple myeloma cells
+GSM1981690	2	GSM1981690	Acute myeloid leukemia cells
+GSM1981691	2	GSM1981691	Acute myeloid leukemia cells
+GSM1981692	2	GSM1981692	Primary bronchial epithelial cells
+GSM1981693	2	GSM1981693	Primary bronchial epithelial cells
+GSM1981694	2	GSM1981694	Type I macrophages
+GSM1981695	2	GSM1981695	Type 2 macrophages
+GSM1981696	2	GSM1981696	Type I macrophages
+GSM1981697	2	GSM1981697	Type 2 macrophages
+GSM1981698	2	GSM1981698	Acute myeloid leukemia cells
+GSM1981699	2	GSM1981699	Acute myeloid leukemia cells
+GSM1981700	2	GSM1981700	Mononuclear cells
+GSM1981701	2	GSM1981701	Mononuclear cells
+GSM1981702	2	GSM1981702	Primary bronchial epithelial cells
+GSM1981703	2	GSM1981703	Type I macrophages
+GSM1981704	2	GSM1981704	Type 2 macrophages
+GSM1981705	2	GSM1981705	Mononuclear cells
+GSM1981706	2	GSM1981706	B-cells
+GSM1981707	2	GSM1981707	Acute myeloid leukemia cells
+GSM1981708	2	GSM1981708	Acute myeloid leukemia cells
+GSM1981709	2	GSM1981709	Acute myeloid leukemia cells
+GSM1981710	2	GSM1981710	Multiple myeloma cells
+GSM1981711	2	GSM1981711	Multiple myeloma cells
+GSM1981712	2	GSM1981712	PHA-T blasts
+GSM1981713	2	GSM1981713	Umbilical vein endothelial cells
+GSM1981714	2	GSM1981714	Umbilical vein endothelial cells
+GSM1981715	2	GSM1981715	Umbilical vein endothelial cells
+GSM1981716	2	GSM1981716	K562
+GSM1981717	2	GSM1981717	K562
+GSM1981718	2	GSM1981718	T2
+GSM1981719	2	GSM1981719	AML-193
+GSM1981720	2	GSM1981720	THP-1
+GSM1981721	2	GSM1981721	Cornea stroma cells
+GSM1981722	2	GSM1981722	Cornea stroma cells
+GSM1981723	2	GSM1981723	Cornea stroma cells
+GSM1981724	2	GSM1981724	Intrahepatic biliary epithelial cells
+GSM1981725	2	GSM1981725	Intrahepatic biliary epithelial cells
+GSM1981726	2	GSM1981726	Umbilical vein endothelial cells
+GSM1981727	2	GSM1981727	Umbilical vein endothelial cells
+GSM1981728	2	GSM1981728	Cornea epithelial cells
+GSM1981729	2	GSM1981729	Cornea epithelial cells
+GSM1981730	2	GSM1981730	Fibroblasts
+GSM1981731	2	GSM1981731	Fibroblasts
+GSM1981732	2	GSM1981732	Jurkat
+GSM1981733	2	GSM1981733	Daudi
+GSM1981734	2	GSM1981734	Raji
+GSM1981735	2	GSM1981735	Fibroblasts
+GSM1981736	2	GSM1981736	Fibroblasts
+GSM1981737	2	GSM1981737	Jurkat
+GSM1981738	2	GSM1981738	Jurkat-76
+Series15_HealthyLungBiopsy_2	1	Series15_HealthyLungBiopsy_2	HD_lung
+Series15_HealthyLungBiopsy_1	1	Series15_HealthyLungBiopsy_1	HD_lung
+Series15_COVID19Lung_2	1	Series15_COVID19Lung_2	COVID19_lung
+Series15_COVID19Lung_1	1	Series15_COVID19Lung_1	COVID19_lung
