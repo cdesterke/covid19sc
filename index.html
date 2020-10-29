@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<title>Multi-omics investigation in lung of severe COVID19 disease</title>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="keywords" content="bigdata, omics, transcriptome, single cell RNAseq, epigenetics" /> 
+<meta name="description" content="Tutorial support for protocols to perform multi-omics analyses">
+<meta property="og:multi-omics" content="make sense of multi-omics data for COVID19 disease">
+<meta name="github:site" content="covid19sc">
+ 		
+		
+		
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+@media (max-width: 2560px) {
+	* {
+		box-sizing: border-box;
+	}
+	
+	/* passer body (et tous les éléments de largeur fixe) en largeur automatique */
+
+	body {
+		width: auto;
+		margin: 0;
+		padding: 0;
+	}
+	
+	/* fixer une largeur maximale de 100% aux éléments potentiellement problématiques */
+
+	img,
+	table,
+	td,
+	blockquote,
+	code,
+	pre,
+	textarea,
+	input,
+	iframe,
+	object,
+	embed,
+	video {
+		max-width: 100%;
+	}
+	
+	/* conserver le ratio des images */
+
+	img {
+		height: auto;
+	}
+	
+	/* gestion des mots longs */
+
+	textarea,
+	table,
+	td,
+	th,
+	code,
+	pre,
+	samp {
+		-webkit-hyphens: auto; /* césure propre */
+		-moz-hyphens: auto;
+		hyphens: auto;
+		word-wrap: break-word; /* passage à la ligne forcé */
+	}
+	
+	code,
+	pre,
+	samp {
+		white-space: pre-wrap; /* passage à la ligne spécifique pour les éléments à châsse fixe */
+	}
+	
+	/* Passer à une seule colonne (à appliquer aux éléments multi-colonnes) */
+
+	.element1,
+	.element2 {
+		float: none;
+		width: auto;
+	}
+
+	/* masquer les éléments superflus */
+
+	.hide_mobile {
+		display: none !important;
+	}
+
+	
+	body{
+	background:#AEE4FF;
+}
+	h1{
+	background:#e3f2fd;
+}	
+	
+	h2{
+	background:#f5eef8;
+}	
+
+	h3{
+	background:#e8f8f5;
+}	
+.form-style-1 {
+	margin:10px auto;
+	max-width: 400px;
+	padding: 20px 12px 10px 20px;
+	font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+.form-style-1 li {
+	padding: 0;
+	display: block;
+	list-style: none;
+	margin: 10px 0 0 0;
+}
+.form-style-1 label{
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}
+.form-style-1 input[type=text], 
+.form-style-1 input[type=date],
+.form-style-1 input[type=datetime],
+.form-style-1 input[type=number],
+.form-style-1 input[type=search],
+.form-style-1 input[type=time],
+.form-style-1 input[type=url],
+.form-style-1 input[type=email],
+textarea, 
+select{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border:1px solid #BEBEBE;
+	padding: 7px;
+	margin:0px;
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;	
+}
+.form-style-1 input[type=text]:focus, 
+.form-style-1 input[type=date]:focus,
+.form-style-1 input[type=datetime]:focus,
+.form-style-1 input[type=number]:focus,
+.form-style-1 input[type=search]:focus,
+.form-style-1 input[type=time]:focus,
+.form-style-1 input[type=url]:focus,
+.form-style-1 input[type=email]:focus,
+.form-style-1 textarea:focus, 
+.form-style-1 select:focus{
+	-moz-box-shadow: 0 0 8px #88D5E9;
+	-webkit-box-shadow: 0 0 8px #88D5E9;
+	box-shadow: 0 0 8px #88D5E9;
+	border: 1px solid #88D5E9;
+}
+.form-style-1 .field-divided{
+	width: 49%;
+}
+
+.form-style-1 .field-long{
+	width: 100%;
+}
+.form-style-1 .field-select{
+	width: 100%;
+}
+.form-style-1 .field-textarea{
+	height: 100px;
+}
+.form-style-1 input[type=submit], .form-style-1 input[type=button]{
+	background: #4B99AD;
+	padding: 8px 15px 8px 15px;
+	border: none;
+	color: #fff;
+}
+.form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover{
+	background: #4691A4;
+	box-shadow:none;
+	-moz-box-shadow:none;
+	-webkit-box-shadow:none;
+}
+
+.form-style-1 input[type=submit], .form-style-1 input[type=reset]{
+	background: #4B99AD;
+	padding: 8px 15px 8px 15px;
+	border: none;
+	color: #fff;
+}
+.form-style-1 input[type=submit]:hover, .form-style-1 input[type=reset]:hover{
+	background: #4691A4;
+	box-shadow:none;
+	-moz-box-shadow:none;
+	-webkit-box-shadow:none;
+}
+.form-style-1 .required{
+	color:red;
+}
+
+
+</style>
+
+
+
+
+</head>
+	
+<body>
+	
+
+
+<img src="logo.png"> 	
+		
+<center><h1>Bioinformatics for multi-omics analyses related to COVID19 disease</h1></center>
+<hr>
+<h2>Tutorial for single cell RNA-seq analysis of bronchoalveolar cells in COVID19 disease</h2>
+<h3 style="text-align:center;">GSE145926 Seurat analysis: <a href="GSE145926.html">GSE145926</a></h3>
+<hr>
+
+<h2>Tutorial for immune deconvolution of lung transcriptome in COVID19 disease</h2>
+<h3 style="text-align:center;">immune deconvolution of lung transcriptome: <a href="immunedeconvolution.html">immune deconvolution</a></h3>
+<hr>
+
+
+</body>
+</html>
