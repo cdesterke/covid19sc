@@ -1,0 +1,129 @@
+---
+title: "GSE145926Seurat"
+author: "Christophe Desterke"
+date: "28/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Seurat protocol to treated the single cell transcriptome analysis of dataset GSE145926
+
+GSE145926 dataset evaluate Single-cell landscape of bronchoalveolar immune cells in COVID-19 patients.
+It comprised 12 experiments: 6 were performed on Healthy donor samples, 3 on mild COVID19 patients and 
+3 on severe COVID19 patients.
+This dataset is acceccible at the folowing address: <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE145926>
+
+After downloading 'GSE145926.sh' BASH script at following address: 
+<https://github.com/cdesterke/covid19sc>
+in linux terminal (BASH) you can execute it to download the entire dataset with the command:
+./GSE145926.sh
+it will create a folder nammed 'GSE145925' comprising the 12 experiments in h5 format.
+
+```{r}
+library(Seurat)
+```
+
+### intensive R code to build the Seurat object of the 12 experiments
+Note: this code could not been include interactively in Rmarkdown document because is very long to execute
+and need high trading computer
+*** 
+loading the 12 experiments in h5 format
+
+* library(hdf5r)
+* C51_HD <- Read10X_h5('GSM4475048_C51_filtered_feature_bc_matrix.h5')
+* C52_HD <- Read10X_h5('GSM4475049_C52_filtered_feature_bc_matrix.h5')
+* C100_HD <- Read10X_h5('GSM4475050_C100_filtered_feature_bc_matrix.h5')
+* C148_HD <- Read10X_h5('GSM4475051_C148_filtered_feature_bc_matrix.h5')
+* C149_HD <- Read10X_h5('GSM4475052_C149_filtered_feature_bc_matrix.h5')
+* C152_HD <- Read10X_h5('GSM4475053_C152_filtered_feature_bc_matrix.h5')
+* C141_mildCOVID <- Read10X_h5('GSM4339769_C141_filtered_feature_bc_matrix.h5')
+* C142_mildCOVID <- Read10X_h5('GSM4339770_C142_filtered_feature_bc_matrix.h5')
+* C144_mildCOVID <- Read10X_h5('GSM4339772_C144_filtered_feature_bc_matrix.h5')
+* C143_severeCOVID <- Read10X_h5('GSM4339771_C143_filtered_feature_bc_matrix.h5')
+* C145_severeCOVID <- Read10X_h5('GSM4339773_C145_filtered_feature_bc_matrix.h5')
+* C146_severeCOVID <- Read10X_h5('GSM4339774_C146_filtered_feature_bc_matrix.h5')
+
+***
+Creating individual Seurat objects
+
+* control_51 <- CreateSeuratObject(counts = C51_HD, project = "control", min.cells = 3, min.features = 200)
+* control_52 <- CreateSeuratObject(counts = C52_HD, project = "control", min.cells = 3, min.features = 200)
+* control_100 <- CreateSeuratObject(counts = C100_HD, project = "control", min.cells = 3, min.features = 200)
+* control_148 <- CreateSeuratObject(counts = C148_HD, project = "control", min.cells = 3, min.features = 200)
+* control_149 <- CreateSeuratObject(counts = C149_HD, project = "control", min.cells = 3, min.features = 200)
+* control_152 <- CreateSeuratObject(counts = C152_HD, project = "control", min.cells = 3, min.features = 200)
+* mildcovid_141 <- CreateSeuratObject(counts = C141_mildCOVID, project = "mc", min.cells = 3, min.features = 200)
+* mildcovid_142 <- CreateSeuratObject(counts = C142_mildCOVID, project = "mc", min.cells = 3, min.features = 200)
+* mildcovid_144 <- CreateSeuratObject(counts = C144_mildCOVID, project = "mc", min.cells = 3, min.features = 200)
+* severecovid_143 <- CreateSeuratObject(counts = C143_severeCOVID, project = "sc", min.cells = 3, min.features = 200)
+* severecovid_145 <- CreateSeuratObject(counts = C145_severeCOVID, project = "sc", min.cells = 3, min.features = 200)
+* severecovid_146 <- CreateSeuratObject(counts = C146_severeCOVID, project = "sc", min.cells = 3, min.features = 200)
+
+***
+Build a merged Seurat object with the 12 experiments
+
+* all <- merge(control_51, y = c(control_52, control_100, control_148, control_149, control_152 , mildcovid_141, mildcovid_142, mildcovid_144, severecovid_143, severecovid_145, severecovid_146 ), add.cell.ids = c("ct51", "ct52","ct100","ct148","ct149","ct152","mc141", "mc142", "mc144", "sc143","sc145","sc146"), project = "covid")
+
+***
+Description of the object by their cell origin and normalization
+
+* list <- SplitObject(all, split.by = "orig.ident")
+* list <- lapply(X = list, FUN = function(x) {
+*   x <- NormalizeData(x)
+*   x <- FindVariableFeatures(x, selection.method = "vst", nfeatures = 2000)
+*   })
+
+***
+Find common anchors
+
+* anchors <- FindIntegrationAnchors(object.list = list, dims = 1:20)
+* combined <- IntegrateData(anchorset = anchors, dims = 1:20)
+* DefaultAssay(combined) <- "integrated"
+
+***
+Scaling and dimension reduction
+
+* combined <- ScaleData(combined, verbose = FALSE)
+* combined <- RunPCA(combined, npcs = 30, verbose = FALSE)
+* combined <- RunUMAP(combined, reduction = "pca", dims = 1:20)
+* save(combined,file="all.rda")
+* load("all.rda")
+```{r}
+load("all.rda")
+```
+
+
+
+
+## Perform a Dimplot with UMAP reduction
+```{r}
+DimPlot(combined, reduction = "umap",cols=c("green","blue","red")) 
+```
+
+## Perform a dotplot of different features split by cell origin
+
+```{r}
+DotPlot(combined, features = rev(c("KRT8","CD3E","CD8A","IL7R","CSF1R","CSF2RA","CSF3R","CD14","FCGR3A","NKG7","MS4A1","HBB","PF4","CD34","PTPRC")),cols=c("green","blue","red"), dot.scale = 8, split.by = "orig.ident",assay = "RNA") +
+RotatedAxis()
+```
+
+## Perform a Feature plot on a marker
+
+```{r}
+FeaturePlot(combined, features = c("FCGR3A"),min.cutoff = "q9",cols=c("#CCFFFF","darkblue"),split.by= "orig.ident")
+```
+
+## Perform a violinplot on a marker split by cell origin
+```{r}
+VlnPlot(combined, features = c("NFKBIA"), slot = "counts", log = TRUE,split.by= "orig.ident",pt.size=0,cols=c("green","blue","red"))
+```
+
+## Perform a scatterplot between two features split by cell origin
+```{r}
+FeatureScatter(combined, feature1 = "rna_NFKBIA", feature2 = "rna_STAT3", slot="counts",
+cols=c("green","blue","red"))
+```
+
