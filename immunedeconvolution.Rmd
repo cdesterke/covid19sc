@@ -1,0 +1,84 @@
+---
+title: "IMMUNE DECONVOLUTION"
+author: "Christophe Desterke"
+date: "10/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This tutorial explain immune-deconvolution process for a transcriptome dataset
+
+Immune  deconvolution of transcriptome is a bioinformatics pipeline which integrate the transcriptome dataset from an organ with the transcriptome of sorted immune cell subpopulations. 
+This procedure helps explain the level of immune infiltration of an organ.
+This original procedure have been employed in the following publication
+<https://pubmed.ncbi.nlm.nih.gov/33015591/>
+
+In this procedure, the COVID19 patient lung dataset (GSE147507) is used along with the data from immune subpopulations included in the dataset (GSE76340).
+
+references of the datasets:
+
+* Blanco-Melo D, Nilsson-Payant BE, Liu WC, Uhl S et al. Imbalanced Host Response to SARS-CoV-2 Drives Development of COVID-19. Cell 2020 May 28;181(5):1036-1045.e9. PMID: 32416070
+
+* Pont MJ, Honders MW, Kremer AN, van Kooten C et al. Microarray Gene Expression Analysis to Evaluate Cell Type Specific Expression of Targets Relevant for Immunotherapy of Hematological Malignancies. PLoS One 2016;11(5):e0155165. PMID: 27171398
+
+
+### First step is to correct cross batch effect between datasets
+In order to correct batch effect in transcriptome SVA bioconductor package will be used.
+To perform this normalization step, two files are necessary: a file comprising the transcriptome data matrix of the two datasets (this matrix file is named covidcross2.txt) and a metadata file comprising in particular the information of the batches and incidentally data corresponding to biological groups (this file is named metadata.txt).
+
+These pre-process data could be download at the address:
+<https://github.com/cdesterke/covid19sc/tree/master/immunedeconvolution_data>
+
+Loading library and data
+```{r}
+library(sva)
+set<-read.table("covidcross2.txt",h=T)
+meta<-read.table("metadata.txt",h=T,sep="\t",row.names = 1)
+```
+
+data exploration
+```{r}
+knitr::kable(head(meta))
+colnames(set)
+```
+
+## SVA batch correction
+```{r}
+batch=meta$batch
+modcombat=model.matrix(~1,data=meta)
+mat<-as.matrix(set)
+edata<-ComBat(dat=mat,batch=batch,mod=modcombat,par.prior=TRUE, prior.plots = TRUE)
+```
+Reduction of the corrected matrix to the genelist found to be differentially expressed between healthy donors and COVID19 lungs. This gene list is nammed deg.txt and could be downloaded at the following address:
+
+<https://github.com/cdesterke/covid19sc/tree/master/immunedeconvolution_data>
+
+Data pre-processing for principal component analysis
+```{r}
+deg<-read.table("deg.txt",h=T)
+head(deg)
+small<-merge(deg,edata,by="row.names")
+dim(small)
+colnames(small)
+row.names(small)<-small$Row.names
+ok<-small[,9:ncol(small)]
+trans<-t(ok)
+data<-data.frame(trans,meta$group)
+library(dplyr)
+sub<-filter(data,meta.group == "COVID19_lung" | meta.group == "HD_lung" | meta.group == "Fibroblasts" | meta.group == "Type I macrophages" | meta.group == "Primary bronchial epithelial cells" | meta.group == "Type 2 macrophages" | meta.group == "B-cells")
+```
+
+## Unsupervized principal component analysis
+
+```{r}
+library(FactoMineR)
+res = PCA(sub, scale.unit=TRUE, ncp=5, quali.sup=96, graph=F)
+plotellipses(res,label="none",title="", cex=2)
+# description of the first principal axis which discriminated healthy donor and COVID19 lungs
+output<-dimdesc(res)
+output$Dim.1
+```
+
