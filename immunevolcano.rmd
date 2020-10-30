@@ -1,0 +1,79 @@
+---
+title: "Immune Volcano on COVID19 lung trancriptome dataset GSE150316"
+author: "Christophe Desterke"
+date: "10/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This tutorial will teach how to perform an immune volcano beteen two transcriptome conditions exploring one tissue
+
+In order to perform this custom volcanoplot on immune enrichment, it is necessary to realize a pipeline of several steps of analysis :
+
+* step 1: perform xcell immune enrichment on microarray matrix comprising the two groups of samples using the classical "xCell" package available at the following address <https://github.com/dviraran/xCell>
+  + Reference: Aran, Hu and Butte, xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology (2017) 18:220
+
+* step 2: perform limma analysis on xCell immune enrichment. This step could be pipe by sourcing "immunevolcano.R" code comprising custom function named "limmaxcell". The code file "immunevolcano.R" is available at the address <https://github.com/cdesterke/covid19sc>
+  + Reference: Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK (2015). “limma powers differential expression analyses for RNA-sequencing and microarray studies.” Nucleic Acids Research, 43(7), e47.
+  
+* step 3: perform a custom volcanotplot on limma result of the xCell enrichment. This step could be pipe by sourcing "immunevolcano.R" code comprising custom function named "volxcell". The code file "immunevolcano.R" is available at the address <https://github.com/cdesterke/covid19sc>
+
+* step 4: perform boxplot on specific cell subpopulation which was found signifcant during immune analysis
+
+* immune volcanoplpot analysis was performed on dataset GSE150316 of COVID19 lung samples, in order to realize immune differential analysis samples were split in two groups: patient samples with low amont of virus in the tissue and patient samples with high amont of virus in the tissue
+  + Reference: Niyati Desai, MedRxiv,August 02, 2020, Temporal and Spatial Heterogeneity of Host Response to SARS-CoV-2 Pulmonary Infection doi: https://doi.org/10.1101/2020.07.30.20165241 
+  
+```{r}
+# load libraries and source de custom code
+library(limma)
+library(xCell)
+source("immunevolcano.R")
+```
+
+```{r}
+# load the data
+set<-read.table("GSE150316data.txt",h=T)
+pheno<-read.table("GSE150316pheno.txt",h=T)
+```
+
+## Step 1 perform xCell analysis on the transcriptome matrix 
+```{r}
+resultxcell<-xCellAnalysis(set)
+mat<-as.data.frame(resultxcell)
+```
+
+## Step 2 perform limmaxcell analysis on xcell results 
+```{r}
+res<-limmaxcell(data=mat,annot=pheno,control="LOW")
+res
+```
+
+## Step 3 perform custom volcanoplot on limmaxcell results
+
+```{r}
+## volxcell function different parameters
+## 1st is the result of limmaxcell analysis
+## 2nd is thresp : is the value of threshold p-value on the graph
+## 3rd is thresfc : is the value of threshold logfc on the graph
+## 4th is fold : is the value for fold size of point over both threshold
+## 5th is title : title of the graph
+volxcell(res,thresp=0.1,thresfc=0.01,fold=5,title="Immune analysis in lung of COVID19")
+```
+
+## perform boxplot on significant cell subtype
+```{r}
+trans<-t(resultxcell)
+data<-data.frame(pheno,trans)
+library(ggplot2)
+ggplot(data=data,aes(x=group, y=Smooth.muscle, color=group))+
+  geom_boxplot()+
+  geom_dotplot(binaxis='y', stackdir='center', dotsize=1)+
+  theme_classic()
+```
+
+### conclusion: in lung of COVID19 patients presenting HIGH level of SARS-COV2 virus in the tissue,  there is an increase of Smooth muscle cell signature as compared to lung of patients presenting LOW level of virus.
+
+
