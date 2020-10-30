@@ -9,8 +9,14 @@ Millions of infections by the novel coronavirus 2019  (2019-nCoV or severe acute
 ## Material and methods
 
 * 1-Tutorial for drawing immune volcanoplot of COVID19 lung transcriptome according to SARS-COV2 quantification level found in the tissue (GSE150316)
-<https://eager-newton-857740.netlify.app/immunevolcano.html>
+  +<https://eager-newton-857740.netlify.app/immunevolcano.html>
 ![iv](https://github.com/cdesterke/covid19sc/blob/master/immunevolcano.png)
+
+* 2-Tutorial for immune deconvolution of lung transcriptome in COVID19 disease (GSE147507 and GSE76340)
+  +<https://eager-newton-857740.netlify.app/immunedeconvolution.html>
+![pca](https://github.com/cdesterke/covid19sc/blob/master/pca.png)
+
+
 
 ## References
 
