@@ -1,0 +1,5 @@
+	group
+Series15_HealthyLungBiopsy_2	HD
+Series15_HealthyLungBiopsy_1	HD
+Series15_COVID19Lung_2	COVID19
+Series15_COVID19Lung_1	COVID19
