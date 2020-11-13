@@ -23,6 +23,10 @@ Millions of infections by the novel coronavirus 2019  (2019-nCoV or severe acute
   + <https://eager-newton-857740.netlify.app/gse145926>
 ![umap](https://github.com/cdesterke/covid19sc/blob/master/umap.png)
 
+* 4-Tutorial of NFKBIA trajectory in bronchoalveolar monocytes/macrophages of severe COVID19 patients
+
+  + <https://eager-newton-857740.netlify.app/monocle.html>
+![trajectory](https://github.com/cdesterke/covid19sc/blob/master/monocle.png)
 
 ## References
 
