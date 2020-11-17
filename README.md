@@ -28,6 +28,11 @@ Millions of infections by the novel coronavirus 2019  (2019-nCoV or severe acute
   + <https://eager-newton-857740.netlify.app/monocle.html>
 ![trajectory](https://github.com/cdesterke/covid19sc/blob/master/monocle.png)
 
+* 5-Tutorial to intercept THP1 FOS ChIPseq analysis with transcriptome of COVID-19 lung
+
+  + <https://eager-newton-857740.netlify.app/chip.html>
+![chipintercept](https://github.com/cdesterke/covid19sc/blob/master/chip.png)
+
 ## References
 
 -Lu, R. et al. Genomic characterisation and epidemiology of 2019 novel coronavirus: implications for virus origins and receptor binding. Lancet 395, 565–574 (2020).
