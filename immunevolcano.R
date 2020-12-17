@@ -65,7 +65,7 @@ volxcell<-function(res,thresp=0.5,thresfc=0.1, title="Volcano Plot on IMMUNE CEL
 	
 	# defined the x axis limits
 	
-		xaxis<-max(res$logFC)+ 0.5*max(res$logFC)
+		xaxis<-max(res$logFC)+ 1*max(res$logFC)
 	
 	# found up and down cells with fold change superior to theshold defined
 		up <- rownames(res)[which(res$logFC>=thresfc)]
